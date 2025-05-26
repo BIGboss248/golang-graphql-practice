@@ -88,37 +88,3 @@ func SetupLogger(logFilePath string, logLevel zerolog.Level) (zerolog.Logger, er
 
 	return logger, nil
 }
-
-// The function that will be executed
-func main() {
-	logger, err := SetupLogger("app.log", zerolog.InfoLevel)
-	startTime := time.Now() // Record start time
-	if err != nil {
-		panic(err)
-	}
-	logger.Info().Str("FunctionName:", "main").Msg(FgCyan + "Main function started" + Reset)
-	defer func() {
-		logger.Info().Str("FunctionName:", "main").TimeDiff("Duration (ms)", time.Now(), startTime).Msg(FgCyan + "Main function ended." + Reset)
-	}()
-
-}
-
-/*
-
-First initialize the repository with this command
-
-$ go get github.com/99designs/gqlgen
-$ go run github.com/99designs/gqlgen init
-
-Write your schema in graph\schema.graphqls then run the following command to generate the code
-
-$ go get github.com/99designs/gqlgen
-$ go run github.com/99designs/gqlgen generate
-
-The codes will be generated now implement the resolvers in graph/resolver.go
-
-finally run the server with
-
-$ go run main.go
-
-*/
