@@ -1,0 +1,12 @@
+type currency {
+  name: String!
+  symbol: String!
+  exchangeRate: Float!
+  country: String!
+  url: String!
+  xpath: String!
+}
+
+type query {
+  currency(name: string!): currency
+}

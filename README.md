@@ -51,7 +51,7 @@ type Query {
 
 #### Mutations types
 
-Now that we can query the data we might want to be able to update the data of backend server through the API ([mutaitions](#modify-data-with-mutations)) to deine a way to mutate data throuhg the API we define a mutations type
+Now that we can query the data we might want to be able to update the data of backend  server through the API ([mutaitions](#modify-data-with-mutations)) to deine a way to mutate data throuhg the API we define a mutations type
 
 ```json
 
@@ -133,7 +133,7 @@ the respone we recive is below
 
 #### Query with parameters
 
-we can query data with specific parameters for exaple the query below will return the last 2 persons
+we can query data with specific parameters for example the query below will return the last 2 persons
 
 ```json
 
