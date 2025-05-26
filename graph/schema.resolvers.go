@@ -6,26 +6,110 @@ package graph
 
 import (
 	"context"
-	"fmt"
+	"time"
+
+	"os"
 
 	"github.com/bigboss248/golang-graphql-practice/graph/model"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+/*
+SetupLogger initializes zerolog to write to both console and a file.
+It sets up logging to both the console and a file, allowing for both real-time monitoring and persistent record-keeping.
+
+Parameters:
+
+- logFilePath: The path to the log file where logs will be written.
+
+- logLevel: The minimum level of logs to be written (e.g., DebugLevel, InfoLevel, ErrorLevel).
+
+Returns:
+
+- zerolog.Logger: The configured logger instance.
+
+- error: An error if the log file cannot be opened or created.
+*/
+func SetupLogger(logFilePath string, logLevel zerolog.Level) (zerolog.Logger, error) {
+	// Open or create the log file
+	file, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o644)
+	if err != nil {
+		return zerolog.Logger{}, err
+	}
+
+	// Console writer with human-friendly formatting
+	consoleWriter := zerolog.ConsoleWriter{
+		Out:        os.Stdout,
+		TimeFormat: time.RFC3339,
+	}
+
+	// Set global log level
+	zerolog.SetGlobalLevel(logLevel)
+
+	// Combine both writers
+	multi := zerolog.MultiLevelWriter(consoleWriter, file)
+
+	// Set global time format
+	zerolog.TimeFieldFormat = time.RFC3339
+
+	// Create the logger
+	logger := zerolog.New(multi).With().Caller().Timestamp().Logger()
+
+	// Set as the global logger
+	log.Logger = logger
+
+	return logger, nil
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
-}
+// ANSI color codes for terminal output
+const (
+	Reset = "\033[0m"
+	Bold  = "\033[1m"
+	// Text Colors
+	FgBlack   = "\033[30m"
+	FgRed     = "\033[31m"
+	FgGreen   = "\033[32m"
+	FgYellow  = "\033[33m"
+	FgBlue    = "\033[34m"
+	FgMagenta = "\033[35m"
+	FgCyan    = "\033[36m"
+	FgWhite   = "\033[37m"
+	// Background Colors
+	BgBlack   = "\033[40m"
+	BgRed     = "\033[41m"
+	BgGreen   = "\033[42m"
+	BgYellow  = "\033[43m"
+	BgBlue    = "\033[44m"
+	BgMagenta = "\033[45m"
+	BgCyan    = "\033[46m"
+	BgWhite   = "\033[47m"
+)
 
-// Mutation returns MutationResolver implementation.
-func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
+// OneCurrency is the resolver for the oneCurrency field.
+func (r *queryResolver) OneCurrency(ctx context.Context, name string) (*model.Currency, error) {
+	OneCurrencyStartTime := time.Now() // Record start time
+	// defer keyword will execute a code when the function returns
+	logger, err := SetupLogger("app.log", zerolog.InfoLevel)
+	if err != nil {
+		panic(err)
+	}
+	logger.Info().Str("FunctionName:", "OneCurrency").Msg(FgCyan + "OneCurrency function started" + Reset)
+	defer func() {
+		logger.Info().Str("FunctionName:", "OneCurrency").TimeDiff("Duration (ms)", time.Now(), OneCurrencyStartTime).Msg(FgCyan + "OneCurrency function ended." + Reset)
+	}()
+	var usd = &model.Currency{
+		Name:         "US Dollar",
+		Symbol:       "$",
+		ExchangeRate: 1.0,
+		Country:      "United States",
+		URL:          "https://www.example.com/usd",
+		Xpath:        "//div[@class='usd-rate']",
+	}
+	return usd, nil
+}
 
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
-type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
