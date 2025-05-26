@@ -7,6 +7,6 @@ type currency {
   xpath: String!
 }
 
-type query {
-  currency(name: string!): currency
+type Query {
+  oneCurrency(name: String!): currency
 }
