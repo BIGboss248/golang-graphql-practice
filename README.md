@@ -245,3 +245,8 @@ go run github.com/99designs/gqlgen generate
 
 now that we generated our models and some code we need to implement out resolvers (function that will get the data querried from the client to return it to the client)
 The resolvers are in graph\schema.resolvers.go
+
+## Use the gqlgen
+
+Now you can use the playground in [http://localhost:port](http://localhost:port) where port is in /graph/server.go and defaultPort variable it is set by default to 8080
+And the graphql endpoint is located in /query path changeable in /graph/server.go
