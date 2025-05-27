@@ -1,6 +1,6 @@
 {
-    "sonarlint.connectedMode.project": {
-        "connectionId": "bigboss248",
-        "projectKey": "BIGboss248_golang-graphql-practice"
-    }
-} // This file will override vscode user settings any unspecified settings will folow user settings leave empty to use your own settings
+  "sonarlint.connectedMode.project": {
+    "connectionId": "bigboss248",
+    "projectKey": "BIGboss248_golang-graphql-practice"
+  }
+}
