@@ -1,4 +1,4 @@
-package CustomLogs // import {REMOTE}/{USERNAME}/{module name}/main
+package scripts // import {REMOTE}/{USERNAME}/{module name}/main
 
 // import packages
 import (
